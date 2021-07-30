@@ -8,7 +8,7 @@ public class AltControl : MonoBehaviour
     public Text curAction, curButton;
     public Combo[] combos;
 
-    Combo currentCombo;
+    public Combo currentCombo;
     int nextChainIndex;
 
 
@@ -81,6 +81,7 @@ public class AltControl : MonoBehaviour
         {
             curAction.text = "Idle";
             // All attack anims should have an "Exit Time" transition back to Idle
+            
             canChain = false;
             canStart = true;
             nextChainIndex = 0;

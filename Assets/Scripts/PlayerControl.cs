@@ -60,13 +60,17 @@ public class PlayerControl : MonoBehaviour
         if (!isPlaying) return;
         if (Input.GetAxis(attackOne) > 0 && !isAttacking)
         {
+            StopAllCoroutines();
             anims.SetTrigger("OnPunchOne");
+            StartCoroutine(SafetyAttackTimer());
             isAttacking = true;
             OnAttack.Invoke(true);
         }
         if (Input.GetAxis(attackTwo) > 0 && !isAttacking)
         {
+            StopAllCoroutines();
             anims.SetTrigger("OnPunchTwo");
+            StartCoroutine(SafetyAttackTimer());
             isAttacking = true;
             OnAttack.Invoke(true);
         }
@@ -120,14 +124,22 @@ public class PlayerControl : MonoBehaviour
         // Need to do damage. . . but to where?
         Debug.Log("Took Damage: " + dReceived.ToString());
         anims.SetTrigger("OnHit");
+        
         myGauge.UpdateGauge(curHealth);
         if (curHealth <= 0) GameLogic.OnEnd.Invoke(playerNumber);
+		
     }
 
     IEnumerator TimedImmunity()
     {
         yield return new WaitForSeconds(immuneTimer);
         isImmune = false;
+    }
+
+    IEnumerator SafetyAttackTimer()
+    {
+        yield return new WaitForSeconds(0.15f);
+        isAttacking = false;
     }
 
     public void AttackEnd()
